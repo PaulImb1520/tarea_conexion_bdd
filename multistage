@@ -1,0 +1,16 @@
+# Etapa 1: Construir el binario
+FROM golang:1.21
+WORKDIR /src
+COPY <<EOF ./main.go
+package main
+import "fmt"
+func main() {
+    fmt.Println("¡Hola, mundo!")
+}
+EOF
+RUN go build -o /bin/hello ./main.go
+
+# Etapa 2: Crear la imagen final
+FROM scratch
+COPY --from=0 /bin/hello /bin/hello
+CMD ["/bin/hello"]
